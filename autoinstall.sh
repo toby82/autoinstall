@@ -1,23 +1,14 @@
-
-function get_ip(){
-	HOST_IP=`LC_ALL=C /sbin/ifconfig eth0 | grep -m 1 'inet addr:'| cut -d: -f2 | awk '{print $1}'`
-	MASK=`LC_ALL=C /sbin/ifconfig eth0 | grep -m 1 'inet addr:'| cut -d: -f4`
-	GW=`route -n | grep 'UG[ \t]' | awk '{print $2}'`
-	echo ${HOST_IP}
-	echo ${MASK}
-	echo ${GW}
-
-}
-function set_ip(){
-:
-
-}
-function set_hostname(){
-:
-
-}
-
-function set_apt_sources(){
-
-:
-}
+#!/bin/bash
+##############################################
+TOP='/root/autoinstall'
+#echo ${TOP}
+. ${TOP}/functions
+set_ip
+if [ $? = 0 ];then
+set_hostname
+fi
+set_apt_sources
+if [ $? = 0 ];then
+echo "set success"	
+apt-get -y update && apt-get -y install nova-compute nova-network
+fi
