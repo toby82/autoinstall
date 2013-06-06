@@ -38,15 +38,11 @@ function set_hostname(){
 }
 
 function set_apt_sources(){
-	file='/etc/apt/sources.list.d/new.list'
-(
-	cat <<EEE
-deb http://apt.puppetlabs.com precise main
-deb-src http://apt.puppetlabs.com precise main
-deb http://apt.puppetlabs.com precise dependencies
-deb-src http://apt.puppetlabs.com precise dependencies
-deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-proposed/folsom main
-deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/folsom main
-EEE 
-) > ${file}
+filename='/etc/apt/sources.list.d/new.list'
+echo 'deb http://apt.puppetlabs.com precise main' > ${filename}
+echo 'deb-src http://apt.puppetlabs.com precise main' >> ${filename}
+echo 'deb http://apt.puppetlabs.com precise dependencies' >> ${filename}
+echo 'deb-src http://apt.puppetlabs.com precise dependencies' >> ${filename}
+echo 'deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-proposed/folsom main' >> ${filename}
+echo 'deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/folsom main' >> ${filename}
 }
