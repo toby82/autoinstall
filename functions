@@ -1,4 +1,5 @@
 ###############################################
+TOP='/root/autoinstall'
 function get_ip(){
 	HOST_IP=`LC_ALL=C /sbin/ifconfig eth0 | grep -m 1 'inet addr:'| cut -d: -f2 | awk '{print $1}'`
 	MASK=`LC_ALL=C /sbin/ifconfig eth0 | grep -m 1 'inet addr:'| cut -d: -f4`
@@ -51,4 +52,18 @@ function set_apt_sources(){
 	echo 'deb-src http://apt.puppetlabs.com precise dependencies' >> ${filename}
 	echo 'deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-proposed/folsom main' >> ${filename}
 	echo 'deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/folsom main' >> ${filename}
+}
+
+
+function set_novaconfig(){
+	conf="${TOP}/nova.conf"
+ 	novaconf='/etc/nova/nova.conf'
+	if [ -f ${conf} ] && [ -f ${novaconf} ]
+	then
+ 		cat ${conf} > ${novaconf}
+ 		sed -i -e "s/%local_ip%/${HOST_IP}/g" -e "s/%control_ip%/${CONTROL_IP}/g" -e "s/%mysql_password%/${MY_PW}/g" ${novaconf}
+	else
+		echo "nova config error" && exit 44
+	fi
+
 }

@@ -1,6 +1,8 @@
 #!/bin/bash
 ##############################################
 TOP='/root/autoinstall'
+MY_PW='8782'
+CONTROL_IP='172.18.200.103'
 #echo ${TOP}
 . ${TOP}/functions
 set_ip
@@ -9,15 +11,11 @@ set_hostname
 fi
 set_apt_sources
 if [ $? = 0 ];then
+#apt-get -y update && apt-get -y install ubuntu-cloud-keyring nova-compute nova-network
 echo "set success"	
-apt-get -y update && apt-get -y install nova-compute nova-network
 fi
 if [ $? = 0 ];then
-novaconf='/etc/nova/nova.conf'
-(
-cat <<EE
-
-EE
-) > ${novaconf}
+set_novaconfig && service nova-compute restart && service nova-network restart
+echo "nova config success"
 fi
 
