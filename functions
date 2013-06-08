@@ -38,6 +38,7 @@ function set_hostname(){
 	then
 		echo "exist hosts record"
 	else 
+		sed -i '/127.0.1.1/d' ${hosts}
 		echo "${HOST_IP}	comp-$ip" >> ${hosts}
 	hostname "comp-$ip"
 	echo "comp-$ip" > ${h_name}
@@ -45,6 +46,8 @@ function set_hostname(){
 }
 
 function set_apt_sources(){
+	sources='/etc/apt/sources.list'
+        sed -i "s/172.18.200.144/cn.archive.ubuntu.com/g" ${sources}
 	filename='/etc/apt/sources.list.d/new.list'
 	echo 'deb http://apt.puppetlabs.com precise main' > ${filename}
 	echo 'deb-src http://apt.puppetlabs.com precise main' >> ${filename}
