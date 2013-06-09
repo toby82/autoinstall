@@ -16,10 +16,10 @@ function set_ip(){
 	if ( grep -q "iface eth0 inet dhcp" ${netconf} ) && ( ! grep -q "${HOST_IP}" ${netconf} )
 	then
 	sed -i 's/dhcp/static/' ${netconf}
-		echo ${HOST_IP} >> ${netconf}
-                echo ${MASK} >> ${netconf}
-                echo ${GW} >> ${netconf}
-                echo ${dns} >> ${netconf}
+		echo "address ${HOST_IP}" >> ${netconf}
+        echo "netmask ${MASK}" >> ${netconf}
+        echo "gateway ${GW}" >> ${netconf}
+        echo ${dns} >> ${netconf}
 	elif ( grep -q "iface eth0 inet dhcp" ${netconf} ) && ( grep -q "${HOST_IP}" ${netconf} )
 	then
 		echo "/etc/network/interface file error" && exit 44
@@ -47,7 +47,7 @@ function set_hostname(){
 
 function set_apt_sources(){
 	sources='/etc/apt/sources.list'
-        sed -i "s/172.18.200.144/cn.archive.ubuntu.com/g" ${sources}
+    sed -i "s/172.18.200.144/cn.archive.ubuntu.com/g" ${sources}
 	filename='/etc/apt/sources.list.d/new.list'
 	echo 'deb http://apt.puppetlabs.com precise main' > ${filename}
 	echo 'deb-src http://apt.puppetlabs.com precise main' >> ${filename}
