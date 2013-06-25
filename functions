@@ -15,11 +15,11 @@ function set_ip(){
 	get_ip
 	if ( grep -q "iface eth0 inet dhcp" ${netconf} ) && ( ! grep -q "${HOST_IP}" ${netconf} )
 	then
-	sed -i 's/dhcp/static/' ${netconf}
+		sed -i 's/dhcp/static/' ${netconf}
 		echo "address ${HOST_IP}" >> ${netconf}
-        echo "netmask ${MASK}" >> ${netconf}
-        echo "gateway ${GW}" >> ${netconf}
-        echo ${dns} >> ${netconf}
+        	echo "netmask ${MASK}" >> ${netconf}
+        	echo "gateway ${GW}" >> ${netconf}
+        	echo ${dns} >> ${netconf}
 	elif ( grep -q "iface eth0 inet dhcp" ${netconf} ) && ( grep -q "${HOST_IP}" ${netconf} )
 	then
 		echo "/etc/network/interface file error" && exit 44
